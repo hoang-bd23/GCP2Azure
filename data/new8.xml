@@ -1,0 +1,304 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36" version="29.6.1">
+  <diagram name="Cloud Architecture" id="0">
+    <mxGraphModel grid="1" page="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" pageScale="1" pageWidth="1600" pageHeight="1000" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="sPWrYG3vdC-WyG0ru6FS-47" parent="1" style="swimlane;whiteSpace=wrap;html=1;fillColor=#ffffff;" value="Microsoft Azure" vertex="1">
+          <mxGeometry height="320" width="320" x="-50" y="220" as="geometry" />
+        </mxCell>
+        <mxCell id="sPWrYG3vdC-WyG0ru6FS-48" parent="sPWrYG3vdC-WyG0ru6FS-47" style="swimlane;whiteSpace=wrap;html=1;fillColor=#E6F2FF;" value="Azure VNet (10.30.0.0/16)" vertex="1">
+          <mxGeometry height="260" width="280" x="20" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="sPWrYG3vdC-WyG0ru6FS-49" parent="sPWrYG3vdC-WyG0ru6FS-48" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#80BFFF;" value="Azure VPN Gateway&#xa;Public IP: 20.x.x.x" vertex="1">
+          <mxGeometry height="50" width="180" x="50" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="sPWrYG3vdC-WyG0ru6FS-50" parent="sPWrYG3vdC-WyG0ru6FS-48" style="rounded=0;whiteSpace=wrap;html=1;" value="Azure VM Test&#xa;IP: 10.30.1.5" vertex="1">
+          <mxGeometry height="50" width="180" x="50" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="sPWrYG3vdC-WyG0ru6FS-51" parent="1" style="swimlane;whiteSpace=wrap;html=1;" value="Google Cloud Organization" vertex="1">
+          <mxGeometry height="920" width="1320" x="400" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="sPWrYG3vdC-WyG0ru6FS-52" parent="sPWrYG3vdC-WyG0ru6FS-51" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFF2CC;" value="Security Foundation&#xa;IAM / SCC / KMS" vertex="1">
+          <mxGeometry height="80" width="260" x="40" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="sPWrYG3vdC-WyG0ru6FS-71" parent="sPWrYG3vdC-WyG0ru6FS-51" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E1D5E7;" value="Infrastructure as Code&#xa;Terraform" vertex="1">
+          <mxGeometry height="80" width="220" x="340" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="sPWrYG3vdC-WyG0ru6FS-53" parent="sPWrYG3vdC-WyG0ru6FS-51" style="swimlane;whiteSpace=wrap;html=1;" value="Folder: Platform" vertex="1">
+          <mxGeometry height="470" width="1230" x="40" y="145" as="geometry" />
+        </mxCell>
+        <mxCell id="sPWrYG3vdC-WyG0ru6FS-54" parent="sPWrYG3vdC-WyG0ru6FS-53" style="swimlane;whiteSpace=wrap;html=1;fillColor=#E2F0D9;fontStyle=1" value="Host Project: prj-hub-network" vertex="1">
+          <mxGeometry height="410" width="660.56" x="20" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="sPWrYG3vdC-WyG0ru6FS-55" parent="sPWrYG3vdC-WyG0ru6FS-54" style="swimlane;whiteSpace=wrap;html=1;fontStyle=1" value="Shared VPC" vertex="1">
+          <mxGeometry height="350" width="630" x="20" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="sPWrYG3vdC-WyG0ru6FS-56" parent="sPWrYG3vdC-WyG0ru6FS-55" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#A9D18E;" value="HA Cloud VPN&#xa;(IPsec / IKEv2)" vertex="1">
+          <mxGeometry height="40" width="140" x="56" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="sPWrYG3vdC-WyG0ru6FS-57" parent="sPWrYG3vdC-WyG0ru6FS-55" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#A9D18E;" value="Cloud Router&#xa;(BGP ASN: 65001)" vertex="1">
+          <mxGeometry height="40" width="140" x="416" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="sPWrYG3vdC-WyG0ru6FS-58" parent="sPWrYG3vdC-WyG0ru6FS-55" style="rounded=0;whiteSpace=wrap;html=1;" value="Cloud NAT&#xa;(SNAT to Public IP)" vertex="1">
+          <mxGeometry height="40" width="140" x="236" y="146" as="geometry" />
+        </mxCell>
+        <mxCell id="sPWrYG3vdC-WyG0ru6FS-59" parent="sPWrYG3vdC-WyG0ru6FS-55" style="rounded=0;whiteSpace=wrap;html=1;" value="Central Firewall Rules&#xa;(Wrap-around Network)" vertex="1">
+          <mxGeometry height="40" width="140" x="236" y="270" as="geometry" />
+        </mxCell>
+        <mxCell id="sPWrYG3vdC-WyG0ru6FS-65" parent="sPWrYG3vdC-WyG0ru6FS-55" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#DDEBF7;strokeColor=#444444;dashed=1" value="Dev Subnet (10.10.0.0/16)" vertex="1">
+          <mxGeometry height="40" width="140" x="56" y="230" as="geometry" />
+        </mxCell>
+        <mxCell id="sPWrYG3vdC-WyG0ru6FS-69" parent="sPWrYG3vdC-WyG0ru6FS-55" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#DDEBF7;strokeColor=#444444;dashed=1" value="Prod Subnet (10.20.0.0/16)" vertex="1">
+          <mxGeometry height="40" width="140" x="425" y="230" as="geometry" />
+        </mxCell>
+        <mxCell id="flow-bgp" edge="1" parent="sPWrYG3vdC-WyG0ru6FS-55" source="sPWrYG3vdC-WyG0ru6FS-57" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#0000FF;endArrow=classic;startArrow=classic;dashed=1;" target="sPWrYG3vdC-WyG0ru6FS-56" value="BGP Sync">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="flow-nat-dev" edge="1" parent="sPWrYG3vdC-WyG0ru6FS-55" source="sPWrYG3vdC-WyG0ru6FS-65" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#D79B00;dashed=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="sPWrYG3vdC-WyG0ru6FS-58" value="Egress 0.0.0.0/0">
+          <mxGeometry relative="1" x="0.2153" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="91" y="166" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="flow-nat-prod" edge="1" parent="sPWrYG3vdC-WyG0ru6FS-55" source="sPWrYG3vdC-WyG0ru6FS-69" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#D79B00;dashed=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="sPWrYG3vdC-WyG0ru6FS-58" value="Egress 0.0.0.0/0">
+          <mxGeometry relative="1" x="0.2568" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="495" y="166" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="flow-route-azure-prod" edge="1" parent="sPWrYG3vdC-WyG0ru6FS-55" source="sPWrYG3vdC-WyG0ru6FS-69" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#00AA00;dashed=1;exitX=0.851;exitY=0.025;exitDx=0;exitDy=0;exitPerimeter=0;" target="sPWrYG3vdC-WyG0ru6FS-57" value="Lookup 10.30">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="544" y="206" />
+              <mxPoint x="544" y="206" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="flow-route-azure-dev" edge="1" parent="sPWrYG3vdC-WyG0ru6FS-55" source="sPWrYG3vdC-WyG0ru6FS-65" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#00AA00;dashed=1;" target="sPWrYG3vdC-WyG0ru6FS-57" value="Lookup 10.30">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="44" y="250" />
+              <mxPoint x="44" y="106" />
+              <mxPoint x="486" y="106" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="O8B5gd6vfWZGGC__qEUD-2" parent="sPWrYG3vdC-WyG0ru6FS-55" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontStyle=1" value="Identity-Aware Proxy&#xa;(TCP Forwarding)" vertex="1">
+          <mxGeometry height="40" width="134" x="16" y="296" as="geometry" />
+        </mxCell>
+        <mxCell id="sPWrYG3vdC-WyG0ru6FS-60" parent="sPWrYG3vdC-WyG0ru6FS-53" style="swimlane;whiteSpace=wrap;html=1;fillColor=#E2F0D9;" value="Project: prj-central-observability" vertex="1">
+          <mxGeometry height="410" width="340" x="743" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="obs-log-router" parent="sPWrYG3vdC-WyG0ru6FS-60" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F8CECC;fontStyle=1" value="Log Router&#xa;(Aggregated Sinks)" vertex="1">
+          <mxGeometry height="40" width="300" x="20" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="obs-logging-bucket" parent="sPWrYG3vdC-WyG0ru6FS-60" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F8CECC;" value="Cloud Logging Bucket&#xa;(Hot Storage - 90 Days)" vertex="1">
+          <mxGeometry height="40" width="140" x="20" y="113" as="geometry" />
+        </mxCell>
+        <mxCell id="obs-gcs" parent="sPWrYG3vdC-WyG0ru6FS-60" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F8CECC;" value="Cloud Storage&#xa;(Archive - 1 Year)" vertex="1">
+          <mxGeometry height="40" width="140" x="180" y="113" as="geometry" />
+        </mxCell>
+        <mxCell id="obs-bq" parent="sPWrYG3vdC-WyG0ru6FS-60" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F8CECC;" value="BigQuery&#xa;(Log Analytics)" vertex="1">
+          <mxGeometry height="40" width="140" x="20" y="165" as="geometry" />
+        </mxCell>
+        <mxCell id="obs-pubsub" parent="sPWrYG3vdC-WyG0ru6FS-60" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F8CECC;" value="Pub/Sub Topic&#xa;(SIEM Export)" vertex="1">
+          <mxGeometry height="40" width="140" x="180" y="165" as="geometry" />
+        </mxCell>
+        <mxCell id="obs-functions" parent="sPWrYG3vdC-WyG0ru6FS-60" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFE6CC;" value="Cloud Functions&#xa;(Security Auto-Remediation)" vertex="1">
+          <mxGeometry height="40" width="300" x="20" y="241" as="geometry" />
+        </mxCell>
+        <mxCell id="obs-metrics-scope" parent="sPWrYG3vdC-WyG0ru6FS-60" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFF2CC;" value="Metrics Scope&#xa;(Central Monitoring)" vertex="1">
+          <mxGeometry height="40" width="300" x="20" y="291" as="geometry" />
+        </mxCell>
+        <mxCell id="obs-dashboards" parent="sPWrYG3vdC-WyG0ru6FS-60" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFF2CC;" value="Dashboards &amp; Alerts" vertex="1">
+          <mxGeometry height="40" width="300" x="20" y="364" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-router-logging" edge="1" parent="sPWrYG3vdC-WyG0ru6FS-60" source="obs-log-router" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#000000;dashed=1;" target="obs-logging-bucket" value="Search">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="90" y="90" />
+              <mxPoint x="90" y="90" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge-router-gcs" edge="1" parent="sPWrYG3vdC-WyG0ru6FS-60" source="obs-log-router" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#000000;dashed=1;" target="obs-gcs" value="Archive">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="250" y="90" />
+              <mxPoint x="250" y="90" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge-router-bq" edge="1" parent="sPWrYG3vdC-WyG0ru6FS-60" source="obs-log-router" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#000000;dashed=1;" target="obs-bq" value="Analyze">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="30" y="90" />
+              <mxPoint x="-24" y="90" />
+              <mxPoint x="-24" y="180" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge-router-pubsub" edge="1" parent="sPWrYG3vdC-WyG0ru6FS-60" source="obs-log-router" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#000000;dashed=1;" target="obs-pubsub" value="Export">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="310" y="90" />
+              <mxPoint x="366" y="90" />
+              <mxPoint x="366" y="180" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge-metrics-dash" edge="1" parent="sPWrYG3vdC-WyG0ru6FS-60" source="obs-metrics-scope" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#0000FF;dashed=1;" target="obs-dashboards" value="Visualize &amp; Alert">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="sEgXZn9FGUpSYEGj1PfM-4" edge="1" parent="sPWrYG3vdC-WyG0ru6FS-60" source="obs-pubsub" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#FF6600;dashed=1;entryX=0.75;entryY=0;entryDx=0;entryDy=0;exitX=0.466;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;" target="obs-functions" value="Trigger">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="sPWrYG3vdC-WyG0ru6FS-63" parent="sPWrYG3vdC-WyG0ru6FS-51" style="swimlane;whiteSpace=wrap;html=1;" value="Folder: Development" vertex="1">
+          <mxGeometry height="230" width="320" x="40" y="660" as="geometry" />
+        </mxCell>
+        <mxCell id="sPWrYG3vdC-WyG0ru6FS-64" parent="sPWrYG3vdC-WyG0ru6FS-63" style="swimlane;whiteSpace=wrap;html=1;fillColor=#DDEBF7;fontStyle=1" value="Service Project: prj-dev" vertex="1">
+          <mxGeometry height="100" width="280" x="20" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="sPWrYG3vdC-WyG0ru6FS-66" parent="sPWrYG3vdC-WyG0ru6FS-64" style="rounded=0;whiteSpace=wrap;html=1;" value="Dev VM&#xa;(IP: 10.10.1.5)" vertex="1">
+          <mxGeometry height="40" width="240" x="20" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="J6x-eyC4l_bq8xLV5WiI-1" parent="sPWrYG3vdC-WyG0ru6FS-63" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E1D5E7;" value="External HTTP(S) Load Balancer&lt;br&gt;(Public IP: x.x.x.x)" vertex="1">
+          <mxGeometry height="40" width="180" x="20" y="160" as="geometry" />
+        </mxCell>
+        <mxCell id="sPWrYG3vdC-WyG0ru6FS-67" parent="sPWrYG3vdC-WyG0ru6FS-51" style="swimlane;whiteSpace=wrap;html=1;" value="Folder: Production" vertex="1">
+          <mxGeometry height="230" width="320" x="494" y="660" as="geometry" />
+        </mxCell>
+        <mxCell id="sPWrYG3vdC-WyG0ru6FS-68" parent="sPWrYG3vdC-WyG0ru6FS-67" style="swimlane;whiteSpace=wrap;html=1;fillColor=#DDEBF7;fontStyle=1" value="Service Project: prj-prod" vertex="1">
+          <mxGeometry height="100" width="280" x="20" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="sPWrYG3vdC-WyG0ru6FS-70" parent="sPWrYG3vdC-WyG0ru6FS-68" style="rounded=0;whiteSpace=wrap;html=1;" value="Prod VM&#xa;(IP: 10.20.1.5)" vertex="1">
+          <mxGeometry height="40" width="240" x="20" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="J6x-eyC4l_bq8xLV5WiI-2" parent="sPWrYG3vdC-WyG0ru6FS-67" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E1D5E7;" value="External HTTP(S) Load Balancer&lt;br&gt;(Public IP: x.x.x.x)" vertex="1">
+          <mxGeometry height="40" width="180" x="20" y="160" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-dev-nic" edge="1" parent="sPWrYG3vdC-WyG0ru6FS-51" source="sPWrYG3vdC-WyG0ru6FS-66" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#00AA00;strokeWidth=2;dashed=1;entryX=0.75;entryY=1;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" target="sPWrYG3vdC-WyG0ru6FS-65" value="NIC Attachment">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="389" y="760" />
+              <mxPoint x="389" y="650" />
+              <mxPoint x="241" y="650" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="sPWrYG3vdC-WyG0ru6FS-75" edge="1" parent="sPWrYG3vdC-WyG0ru6FS-51" source="sPWrYG3vdC-WyG0ru6FS-66" style="dashed=1;edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#000000;exitX=0.891;exitY=1.012;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0.25;entryDx=0;entryDy=0;" target="obs-log-router" value="Log Export">
+          <mxGeometry relative="1" x="-0.1457" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="294" y="990" />
+              <mxPoint x="1249" y="990" />
+              <mxPoint x="1249" y="235" />
+            </Array>
+            <mxPoint x="1104" y="240" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="sPWrYG3vdC-WyG0ru6FS-76" edge="1" parent="sPWrYG3vdC-WyG0ru6FS-51" source="sPWrYG3vdC-WyG0ru6FS-70" style="dashed=1;edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#000000;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.75;entryDx=0;entryDy=0;" target="obs-log-router" value="Log Export">
+          <mxGeometry relative="1" x="-0.5906" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="1209" y="760" />
+              <mxPoint x="1209" y="255" />
+            </Array>
+            <mxPoint x="1104" y="260" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="metric-dev" edge="1" parent="sPWrYG3vdC-WyG0ru6FS-51" source="sPWrYG3vdC-WyG0ru6FS-66" style="dashed=1;edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#0000FF;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=1;entryY=0.75;entryDx=0;entryDy=0;" target="obs-metrics-scope" value="Metrics (Ops Agent)">
+          <mxGeometry relative="1" x="-0.0209" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="260" y="1020" />
+              <mxPoint x="1169" y="1020" />
+              <mxPoint x="1169" y="506" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="metric-prod" edge="1" parent="sPWrYG3vdC-WyG0ru6FS-51" source="sPWrYG3vdC-WyG0ru6FS-70" style="dashed=1;edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#0000FF;exitX=0.876;exitY=1.015;exitDx=0;exitDy=0;entryX=1.001;entryY=0.342;entryDx=0;entryDy=0;entryPerimeter=0;exitPerimeter=0;" target="obs-metrics-scope" value="Metrics (Ops Agent)">
+          <mxGeometry relative="1" x="-0.602" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="744" y="810" />
+              <mxPoint x="1139" y="810" />
+              <mxPoint x="1139" y="490" />
+              <mxPoint x="1129" y="490" />
+            </Array>
+            <mxPoint x="1000" y="480" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="sEgXZn9FGUpSYEGj1PfM-1" edge="1" parent="sPWrYG3vdC-WyG0ru6FS-51" source="sPWrYG3vdC-WyG0ru6FS-70" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#00AA00;strokeWidth=2;dashed=1;entryX=0.25;entryY=1;entryDx=0;entryDy=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" target="sPWrYG3vdC-WyG0ru6FS-69" value="NIC Attachment">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="459" y="760" />
+              <mxPoint x="459" y="650" />
+              <mxPoint x="540" y="650" />
+            </Array>
+            <mxPoint x="944" y="800" as="sourcePoint" />
+            <mxPoint x="761" y="550" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="O8B5gd6vfWZGGC__qEUD-5" edge="1" parent="sPWrYG3vdC-WyG0ru6FS-51" source="O8B5gd6vfWZGGC__qEUD-2" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#CC0000;strokeWidth=2;dashed=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="sPWrYG3vdC-WyG0ru6FS-66" value="Encrypted TCP Tunnel">
+          <mxGeometry relative="1" x="-0.2479" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="163" y="650" />
+              <mxPoint x="-21" y="650" />
+              <mxPoint x="-21" y="760" />
+            </Array>
+            <mxPoint x="169" y="884" as="sourcePoint" />
+            <mxPoint x="-51" y="1164" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="sPWrYG3vdC-WyG0ru6FS-72" edge="1" parent="1" source="sPWrYG3vdC-WyG0ru6FS-49" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#0000FF;strokeWidth=2;" target="sPWrYG3vdC-WyG0ru6FS-56" value="IPsec VPN Tunnel&#xa;(UDP 500/4500)">
+          <mxGeometry relative="1" x="-0.2062" y="-5" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="O8B5gd6vfWZGGC__qEUD-3" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Developer&#xa;(Internet)" vertex="1">
+          <mxGeometry height="60" width="30" x="305" y="760" as="geometry" />
+        </mxCell>
+        <mxCell id="O8B5gd6vfWZGGC__qEUD-4" edge="1" parent="1" source="O8B5gd6vfWZGGC__qEUD-3" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#CC0000;strokeWidth=2;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;exitPerimeter=0;" target="O8B5gd6vfWZGGC__qEUD-2" value="SSH/RDP Request">
+          <mxGeometry relative="1" x="-0.4366" y="-30" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="320" y="760" />
+              <mxPoint x="320" y="581" />
+            </Array>
+            <mxPoint x="270" y="1094" as="sourcePoint" />
+            <mxPoint x="350" y="660" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="J6x-eyC4l_bq8xLV5WiI-3" edge="1" parent="1" source="J6x-eyC4l_bq8xLV5WiI-4" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#990099;dashed=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.3333333333333333;exitDx=0;exitDy=0;exitPerimeter=0;" target="J6x-eyC4l_bq8xLV5WiI-2" value="Proxy to Prod">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="800" y="1010" />
+              <mxPoint x="800" y="880" />
+            </Array>
+            <mxPoint x="589.9988235294122" y="1016" as="sourcePoint" />
+            <mxPoint x="727.94" y="990" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="J6x-eyC4l_bq8xLV5WiI-4" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="user&lt;br&gt;(Internet)" vertex="1">
+          <mxGeometry height="60" width="30" x="530" y="990" as="geometry" />
+        </mxCell>
+        <mxCell id="J6x-eyC4l_bq8xLV5WiI-5" edge="1" parent="1" source="J6x-eyC4l_bq8xLV5WiI-4" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#990099;dashed=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;exitPerimeter=0;" target="J6x-eyC4l_bq8xLV5WiI-1" value="Proxy to Prod">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="550" y="990" />
+            </Array>
+            <mxPoint x="540" y="980" as="sourcePoint" />
+            <mxPoint x="914" y="850" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

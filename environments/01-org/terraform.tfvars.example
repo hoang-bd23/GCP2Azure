@@ -1,0 +1,8 @@
+project_id               = "lz-bootstrap-buiduchoang"
+region                   = "asia-southeast1"
+org_id                   = "614651398366"
+billing_account          = "011964-CFB758-5E8295"
+hub_project_id           = "prj-hub-net-buiduchoang"
+observability_project_id = "prj-obs-buiduchoang"
+dev_project_id           = "prj-dev-buiduchoang"
+prod_project_id          = "prj-prod-buiduchoang"

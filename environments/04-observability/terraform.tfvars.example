@@ -1,0 +1,7 @@
+observability_project_id = "prj-obs-buiduchoang"
+region                  = "asia-southeast1"
+org_id                  = "614651398366"
+dev_project_id          = "prj-dev-buiduchoang"
+prod_project_id         = "prj-prod-buiduchoang"
+archive_bucket_name     = "lz-log-archive-buiduchoang"
+functions_bucket_name   = "lz-cf-source-buiduchoang"

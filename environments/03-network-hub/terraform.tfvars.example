@@ -1,0 +1,13 @@
+hub_project_id       = "<your_hub_project_id>"
+dev_project_id       = "<your_dev_project_id>"
+prod_project_id      = "<your_prod_project_id>"
+region               = "asia-southeast1"
+network_name         = "hub-vpc"
+dev_subnet_cidr      = "10.10.0.0/16"
+prod_subnet_cidr     = "10.20.0.0/16"
+router_asn           = 65001
+
+# VPN Configuration — Fill these after Azure VPN Gateway is deployed
+azure_vpn_gateway_ip = "<azure_public_ip>"
+azure_bgp_asn        = 65010
+vpn_shared_secret    = "<your_shared_secret>"

@@ -1,0 +1,24 @@
+# Replace with your Azure subscription ID
+azure_subscription_id = "<your_azure_subscription_id>"
+
+azure_region        = "southeastasia"
+resource_group_name = "<existing_resource_group_name>"
+vnet_name           = "azure-vnet"
+vnet_address_space  = ["10.30.0.0/16"]
+gateway_subnet_cidr = "10.30.255.0/27"
+default_subnet_cidr = "10.30.1.0/24"
+
+# GCP HA VPN public interfaces (get these from GCP Console after 03-network-hub apply)
+gcp_vpn_gateway_ips = ["<gcp_vpn_ip_0>", "<gcp_vpn_ip_1>"]
+
+# GCP Cloud Router BGP peer IPs (default APIPA addresses)
+gcp_bgp_peer_ips = ["169.254.21.1", "169.254.22.1"]
+
+# GCP networks to be accessible from Azure
+gcp_address_spaces = ["10.10.0.0/16", "10.20.0.0/16"]
+
+vpn_shared_secret = "<your_shared_secret>"
+gcp_bgp_asn       = 65001
+azure_bgp_asn     = 65010
+
+test_vm_private_ip = "10.30.1.5"

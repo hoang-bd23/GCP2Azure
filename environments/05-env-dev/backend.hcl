@@ -1,0 +1,1 @@
+bucket = "lz-tfstate-buiduchoang"

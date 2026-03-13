@@ -1,0 +1,6 @@
+project_id          = "prj-obs-buiduchoang"
+region              = "asia-southeast1"
+org_id              = "614651398366"
+terraform_sa_email  = "terraform-runner@lz-bootstrap-buiduchoang.iam.gserviceaccount.com"
+kms_key_ring_name   = "landing-zone-keyring"
+kms_keys            = ["default-key", "logging-key"]

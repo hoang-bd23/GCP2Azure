@@ -1,0 +1,22 @@
+# ===========================================================================
+# These values ALREADY EXIST — get them from gcloud CLI
+# ===========================================================================
+org_id          = "614651398366"           # gcloud organizations list
+billing_account = "011964-CFB758-5E8295"   # gcloud billing accounts list
+region          = "asia-southeast1"        # Your choice
+
+# ===========================================================================
+# These values are CHOSEN BY YOU — must be globally unique across all of GCP
+# ===========================================================================
+seed_project_id      = "lz-bootstrap-buiduchoang"    # Seed project (created here)
+tf_state_bucket_name = "lz-tfstate-buiduchoang"      # GCS bucket for TF state
+tf_sa_name           = "terraform-runner"             # SA name (project-scoped, no need unique)
+
+# ===========================================================================
+# Project IDs for later layers — choose them now, created by 01-org layer
+# Must be globally unique. Suggested pattern: <purpose>-<org-short-name>
+# ===========================================================================
+hub_project_id           = "prj-hub-net-buiduchoang"
+observability_project_id = "prj-obs-buiduchoang"
+dev_project_id           = "prj-dev-buiduchoang"
+prod_project_id          = "prj-prod-buiduchoang"

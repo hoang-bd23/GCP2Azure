@@ -1,0 +1,7 @@
+dev_project_id    = "<your_dev_project_id>"
+hub_project_id    = "<your_hub_project_id>"
+region            = "asia-southeast1"
+zone              = "asia-southeast1-b"
+network_self_link = "projects/<your_hub_project_id>/global/networks/hub-vpc"
+subnet_self_link  = "projects/<your_hub_project_id>/regions/asia-southeast1/subnetworks/dev-subnet"
+vm_machine_type   = "e2-micro"
