@@ -169,6 +169,6 @@ module "firewall" {
 }
 
 ###############################################################################
-# Note: Load Balancer is deployed per service project (05-env-dev, 06-env-prod)
+# Note: Load Balancer is deployed per service project (dev, prod)
 # because GCP does not allow cross-project instance group backends.
 ###############################################################################
