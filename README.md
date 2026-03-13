@@ -55,9 +55,9 @@ landingzone_gcp/
 
 ```
 00-bootstrap → 01-org → 02-security → 03-network-hub → 04-observability
-                                            │                   │
-                                            ├── 05-env-dev      │
-                                            ├── 06-env-prod     │
+                                            │                   
+                                            ├── 05-env-dev      
+                                            ├── 06-env-prod     
                                             └── azure/ (optional, hybrid VPN)
 ```
 
