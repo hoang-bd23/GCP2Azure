@@ -717,228 +717,29 @@ az vm run-command invoke --name azure-test-vm --resource-group Vy-Intern --comma
 
 ---
 
-### Hướng dẫn apply từ điểm đang dừng
-
-#### Bước 1 — Xác thực lại GCP (ADC token hết hạn)
-
-Nếu gặp lỗi `invalid_rapt` hoặc `Your credentials may be incorrect`, chạy lại:
-
-```powershell
-gcloud auth application-default login
-# Trình duyệt sẽ mở → đăng nhập → token mới được lưu tự động
-```
-
-#### Bước 2 — Đăng nhập Azure CLI
-
-```powershell
-# Reload PATH để nhận diện az.cmd vừa cài
-$env:PATH = [System.Environment]::GetEnvironmentVariable("PATH","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("PATH","User")
-
-# Đăng nhập (mở trình duyệt)
-az login
-
-# Chọn đúng subscription
-az account set --subscription "5c77a723-c9d7-4b2f-8dfc-97740a3f6a35"
-
-# Xác nhận
-az account show --query "{name:name, id:id, state:state}" -o table
-```
-
-#### Bước 3 — Kiểm tra SSH key cho Azure test VM
-
-Azure VM sử dụng `file("~/.ssh/id_rsa.pub")`. File này phải tồn tại trước khi apply:
-
-```powershell
-# Kiểm tra
-Test-Path "$env:USERPROFILE\.ssh\id_rsa.pub"
-
-# Nếu chưa có, tạo mới
-ssh-keygen -t rsa -b 4096 -f "$env:USERPROFILE\.ssh\id_rsa" -N '""'
-```
-
-#### Bước 4 — Apply GCP layer 03-network-hub
-
-GCP layer thêm: tunnel-to-azure-1, router interface, BGP peer, và Cloud NAT.
-
-```powershell
-cd F:\DEVOPS\landingzone_gcp\environments\03-network-hub
-
-# Xem lại plan (đã xác nhận 4 resources to add)
-terraform plan -no-color
-
-# Apply
-terraform apply -auto-approve
-```
-
-**Kết quả dự kiến (4 resources):**
-```
-+ module.vpn[0].google_compute_vpn_tunnel.tunnels["tunnel-to-azure-1"]
-+ module.vpn[0].google_compute_router_interface.interfaces["tunnel-to-azure-1"]
-+ module.vpn[0].google_compute_router_peer.peers["tunnel-to-azure-1"]
-+ module.nat.google_compute_router_nat.this
-```
-
-#### Bước 5 — Apply Azure hybrid VPN
-
-```powershell
-cd F:\DEVOPS\landingzone_gcp\azure
-
-# Plan trước
-terraform plan -no-color
-
-# Apply (VPN Gateway mất ~30-45 phút để provision)
-terraform apply -auto-approve
-```
-
-> **⚠️ Lưu ý thời gian:** `azurerm_virtual_network_gateway` thường mất **30-45 phút** để tạo xong. Đây là bình thường, không phải bị treo.
-
----
-
-### Xác minh sau khi apply
-
-#### Kiểm tra trạng thái BGP trên GCP
-
-```powershell
-gcloud compute routers get-status hub-cloud-router `
-  --region=asia-southeast1 `
-  --project=prj-hub-net-buiduchoang `
-  "--format=table(result.bgpPeerStatus[].name,result.bgpPeerStatus[].status,result.bgpPeerStatus[].numLearnedRoutes)"
-```
-
-**Kết quả mong đợi:** Cả 2 peer đều `UP`, mỗi peer học được ít nhất 1 route từ Azure.
-
-```
-NAME         STATUS  NUM_LEARNED_ROUTES
-bgp-azure-0  UP      1
-bgp-azure-1  UP      1
-```
-
-#### Kiểm tra route học được
-
-```powershell
-gcloud compute routers get-status hub-cloud-router `
-  --region=asia-southeast1 `
-  --project=prj-hub-net-buiduchoang `
-  "--format=table(result.bgpPeerStatus[].advertisedRoutes[].dest,result.bgpPeerStatus[].learnedRoutes[].dest)"
-```
-
-#### Kiểm tra tunnel status
-
-```powershell
-gcloud compute vpn-tunnels list `
-  --project=prj-hub-net-buiduchoang `
-  --filter="name~tunnel-to-azure" `
-  "--format=table(name,status,detailedStatus)"
-```
-
-**Kết quả mong đợi:** `ESTABLISHED` cho cả 2 tunnel.
-
-#### Ping test từ GCP dev-vm → Azure test VM
-
-```powershell
-gcloud compute ssh dev-vm `
-  --zone=asia-southeast1-b `
-  --project=prj-dev-buiduchoang `
-  --tunnel-through-iap `
-  --command="ping -c 4 10.30.1.5"
-```
-
-#### Ping test từ Azure VM → GCP dev-vm
-
-SSH vào Azure VM (`10.30.1.5`), sau đó:
-
-```bash
-ping -c 4 10.10.1.5   # GCP dev-vm
-ping -c 4 10.20.1.5   # GCP prod-vm
-```
-
----
-
 ### Troubleshooting Hybrid VPN
 
-#### BGP không lên (trạng thái Connect hoặc Idle)
+Nếu kết nối không thành công (Ping không thông), hãy kiểm tra theo thứ tự:
 
-**Nguyên nhân thường gặp:**
-
-1. **ASN không khớp:** GCP phải là `65001`, Azure phải là `65010`. Kiểm tra:
+1. **Trạng thái BGP (GCP):**
    ```powershell
-   # GCP
-   gcloud compute routers describe hub-cloud-router --region=asia-southeast1 --project=prj-hub-net-buiduchoang --format="value(bgp.asn)"
-
-   # Azure
-   terraform -chdir="F:\DEVOPS\landingzone_gcp\environments\07-hybrid-vpn" output azure_vpn_gateway_bgp_asn
+   gcloud compute routers get-status hub-cloud-router --region=asia-southeast1 --project=prj-hub-net-buiduchoang --format="table(result.bgpPeerStatus[].name,result.bgpPeerStatus[].status,result.bgpPeerStatus[].numLearnedRoutes)"
    ```
+   *Yêu cầu: Status phải là `UP`.*
 
-2. **BGP peer IP sai:** Azure Local Network Gateway phải dùng IP link-local (`169.254.x.x`) của GCP Cloud Router, **không phải** GCP public IP. Đã được sửa trong code.
-
-3. **Tunnel chưa ESTABLISHED:** BGP không thể lên nếu tunnel IPsec chưa UP. Kiểm tra tunnel trước.
-
-4. **Shared secret không khớp:** Cả 2 phía phải dùng `AzureGCP123!`. Kiểm tra trong `terraform.tfvars`.
-
-#### Tunnel ở trạng thái NO_INCOMING_PACKETS
-
-**Nguyên nhân:** Azure VPN Gateway chưa gửi traffic về phía GCP.
-
-**Kiểm tra:** Đợi 2-5 phút sau khi apply xong. Azure gateway cần thêm thời gian để init.
-
-**Nếu vẫn không lên sau 10 phút:**
-```powershell
-# Xem chi tiết lỗi tunnel
-gcloud compute vpn-tunnels describe tunnel-to-azure-0 `
-  --region=asia-southeast1 `
-  --project=prj-hub-net-buiduchoang
-
-gcloud compute vpn-tunnels describe tunnel-to-azure-1 `
-  --region=asia-southeast1 `
-  --project=prj-hub-net-buiduchoang
-```
-
-#### Ping không thông dù tunnel và BGP đều UP
-
-**Kiểm tra theo thứ tự:**
-
-1. **Firewall GCP:** Đảm bảo layer 03 có rule cho phép ICMP từ `10.30.0.0/16`:
+2. **Trạng thái Tunnel (GCP):**
    ```powershell
-   gcloud compute firewall-rules list --project=prj-hub-net-buiduchoang --filter="name~allow-internal"
+   gcloud compute vpn-tunnels list --project=prj-hub-net-buiduchoang --format="table(name,status,detailedStatus)"
    ```
+   *Yêu cầu: Status phải là `ESTABLISHED`.*
 
-2. **NSG Azure:** Layer 07 đã tạo NSG cho phép ICMP và SSH từ `10.10.0.0/16` và `10.20.0.0/16`. Nếu cần kiểm tra:
+3. **ASN & Shared Secret:**
+   - GCP ASN: `65001`
+   - Azure ASN: `65010`
+   - Shared Secret: `AzureGCP123!` (Phải khớp 100% cả 2 bên).
+
+4. **Lỗi SSH Key (Azure):**
+   Nếu gặp lỗi `id_rsa.pub: no such file`, hãy tạo key trước khi apply:
    ```powershell
-   az network nsg rule list --resource-group rg-hybrid-vpn --nsg-name nsg-default -o table
+   ssh-keygen -t rsa -b 4096 -f "$env:USERPROFILE\.ssh\id_rsa" -N '""'
    ```
-
-3. **Route propagation:** BGP phải học đủ route trước khi ping thông.
-
-#### Lỗi `~/.ssh/id_rsa.pub: no such file or directory` khi apply Azure layer
-
-Azure test VM sử dụng SSH public key. Xem **Bước 3** ở trên để tạo key.
-
-#### Lỗi `az: command not found` sau khi cài Azure CLI
-
-Azure CLI (v2.84.0) đã được cài qua winget. Cần reload PATH trong terminal hiện tại:
-
-```powershell
-$env:PATH = [System.Environment]::GetEnvironmentVariable("PATH","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("PATH","User")
-az version
-```
-
-#### Xóa tài nguyên Azure khi không còn cần
-
-```powershell
-cd F:\DEVOPS\landingzone_gcp\azure
-terraform destroy -auto-approve
-```
-
-> **Lưu ý:** VPN Gateway Azure mất ~10-15 phút để xóa. Cloud NAT và tunnel GCP cần xóa đồng thời hoặc sau.
-
----
-
-### Prerequisites bổ sung cho Azure hybrid VPN
-
-Ngoài các prerequisites GCP ở trên, layer này cần thêm:
-
-- **Azure subscription** đã kích hoạt: `5c77a723-c9d7-4b2f-8dfc-97740a3f6a35`
-- **Azure CLI** cài đặt (đã cài v2.84.0 — `winget install Microsoft.AzureCLI`)
-- **`az login`** hoàn thành và đúng subscription
-- **SSH key** tại `~/.ssh/id_rsa.pub` trên máy chạy Terraform
-- **Azure Provider permissions**: account Azure cần quyền `Contributor` hoặc `Owner` trên subscription
