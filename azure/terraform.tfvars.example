@@ -8,7 +8,7 @@ vnet_address_space  = ["10.30.0.0/16"]
 gateway_subnet_cidr = "10.30.255.0/27"
 default_subnet_cidr = "10.30.1.0/24"
 
-# GCP HA VPN public interfaces (get these from GCP Console after 03-network-hub apply)
+# GCP HA VPN public interfaces (get these from GCP Console after foundation/03-network-hub apply)
 gcp_vpn_gateway_ips = ["<gcp_vpn_ip_0>", "<gcp_vpn_ip_1>"]
 
 # GCP Cloud Router BGP peer IPs (default APIPA addresses)

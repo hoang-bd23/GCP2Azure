@@ -25,15 +25,16 @@ Deploy a GCP Landing Zone with Shared VPC (hub-and-spoke), hybrid IPsec VPN to A
 
 ```
 landingzone_gcp/
-├── environments/
+├── foundation/              # Infrastructure Foundation (Shared)
 │   ├── 00-bootstrap/        # Seed project, state bucket, TF service account
 │   ├── 01-org/              # Folders, projects, APIs, org policies
 │   ├── 02-security/         # KMS, SCC, IAM
 │   ├── 03-network-hub/      # Shared VPC, VPN, NAT, Router, Firewall, LB
-│   ├── 04-observability/    # Logging, monitoring, BigQuery, Pub/Sub, CF
-│   ├── 05-env-dev/          # Dev service project + VM
-│   └── 06-env-prod/         # Prod service project + VM
-├── azure/                   # Azure hybrid VPN (optional, needs Azure subscription)
+│   └── 04-observability/    # Logging, monitoring, BigQuery, Pub/Sub, CF
+├── environments/            # Workload Environments
+│   ├── dev/                 # Dev service project + VM
+│   └── prod/                # Prod service project + VM
+├── azure/                   # Azure hybrid VPN (optional)
 ├── modules/
 │   ├── project/             # GCP project creation
 │   ├── vpc/                 # VPC, subnets
@@ -54,11 +55,12 @@ landingzone_gcp/
 ## Deployment Order
 
 ```
+(Foundation)                                (Workloads)
 00-bootstrap → 01-org → 02-security → 03-network-hub → 04-observability
-                                            │                   
-                                            ├── 05-env-dev      
-                                            ├── 06-env-prod     
-                                            └── azure/ (optional, hybrid VPN)
+                                            │                
+                                            ├── environments/dev
+                                            ├── environments/prod
+                                            └── azure/ (optional)
 ```
 
 ---
@@ -563,12 +565,12 @@ Mở PowerShell tại thư mục gốc của dự án (`F:\DEVOPS\landingzone_gc
 
 Nếu bạn không muốn dùng Script và muốn tự tay kiểm soát quá trình xóa, hãy thực hiện theo đúng thứ tự sau để tránh lỗi phụ thuộc (dependency):
 
-**Bước 1: Xóa các môi trường Workload (Layer 05 & 06)**
+**Bước 1: Xóa các môi trường Workload (dev & prod)**
 ```powershell
-cd f:\DEVOPS\landingzone_gcp\environments\06-env-prod
+cd f:\DEVOPS\landingzone_gcp\environments\prod
 terraform destroy -auto-approve
 
-cd ..\05-env-dev
+cd ..\dev
 terraform destroy -auto-approve
 ```
 
@@ -578,10 +580,10 @@ cd f:\DEVOPS\landingzone_gcp\azure
 terraform destroy -auto-approve
 ```
 
-**Bước 3: Xóa chọn lọc tại Network Hub (Layer 03)**
+**Bước 3: Xóa chọn lọc tại Foundation (03-network-hub)**
 *Lưu ý: Tại đây ta chỉ xóa Gateway, không xóa Network.*
 ```powershell
-cd f:\DEVOPS\landingzone_gcp\environments\03-network-hub
+cd f:\DEVOPS\landingzone_gcp\foundation\03-network-hub
 
 # Xóa NAT
 terraform destroy -target=module.nat -auto-approve
@@ -615,10 +617,10 @@ Chạy script deploy cấp tốc khối mạng và máy chủ để dựng lại
 
 Trong trường hợp bạn muốn dựng lại từng lớp để quan sát quá trình khởi tạo, hãy chạy theo thứ tự sau:
 
-**Bước 1: Khắc phục/Dựng lại Network Hub (Layer 03)**
+**Bước 1: Khắc phục/Dựng lại Foundation (03-network-hub)**
 *(Lệnh này sẽ tạo lại NAT, VPN Gateway và Load Balancer nếu đã bị xóa trước đó)*
 ```powershell
-cd f:\DEVOPS\landingzone_gcp\environments\03-network-hub
+cd f:\DEVOPS\landingzone_gcp\foundation\03-network-hub
 terraform apply -auto-approve
 ```
 
@@ -632,12 +634,12 @@ cd f:\DEVOPS\landingzone_gcp\azure
 terraform apply -auto-approve
 ```
 
-**Bước 4: Dựng lại các môi trường Workload (Layer 05 & 06)**
+**Bước 4: Dựng lại các môi trường Workload (dev & prod)**
 ```powershell
-cd f:\DEVOPS\landingzone_gcp\environments\05-env-dev
+cd f:\DEVOPS\landingzone_gcp\environments\dev
 terraform apply -auto-approve
 
-cd ..\06-env-prod
+cd ..\prod
 terraform apply -auto-approve
 ```
 

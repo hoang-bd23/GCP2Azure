@@ -20,32 +20,32 @@ Write-Host " Selective Destroy — Paid Resources Only" -ForegroundColor Cyan
 Write-Host "========================================`n" -ForegroundColor Cyan
 
 # Step 1: Destroy Prod VM + LB
-Write-Host "--- Destroying 06-env-prod ---" -ForegroundColor Yellow
-Push-Location "$ROOT\environments\06-env-prod"
+Write-Host "--- Destroying env-prod ---" -ForegroundColor Yellow
+Push-Location "$ROOT\environments\prod"
 try {
     terraform init "-backend-config=backend.hcl" -input=false -no-color
     terraform destroy -auto-approve -no-color
-    Write-Host "    [OK] 06-env-prod destroyed" -ForegroundColor Green
+    Write-Host "    [OK] env-prod destroyed" -ForegroundColor Green
 } catch {
     Write-Host "    [ERROR] Failed: $_" -ForegroundColor Red
 }
 Pop-Location
 
 # Step 2: Destroy Dev VM + LB
-Write-Host "--- Destroying 05-env-dev ---" -ForegroundColor Yellow
-Push-Location "$ROOT\environments\05-env-dev"
+Write-Host "--- Destroying env-dev ---" -ForegroundColor Yellow
+Push-Location "$ROOT\environments\dev"
 try {
     terraform init "-backend-config=backend.hcl" -input=false -no-color
     terraform destroy -auto-approve -no-color
-    Write-Host "    [OK] 05-env-dev destroyed" -ForegroundColor Green
+    Write-Host "    [OK] env-dev destroyed" -ForegroundColor Green
 } catch {
     Write-Host "    [ERROR] Failed: $_" -ForegroundColor Red
 }
 Pop-Location
 
-# Step 3: Selective destroy in 03-network-hub (NAT + LB only, keep VPC/Firewall/Router)
+# Step 3: Selective destroy in foundation/03-network-hub (NAT + LB only, keep VPC/Firewall/Router)
 Write-Host "--- Destroying NAT in 03-network-hub ---" -ForegroundColor Yellow
-Push-Location "$ROOT\environments\03-network-hub"
+Push-Location "$ROOT\foundation\03-network-hub"
 try {
     terraform init "-backend-config=backend.hcl" -input=false -no-color
     terraform destroy "-target=module.nat" -auto-approve -no-color
@@ -69,7 +69,7 @@ if ($IncludeAzure) {
     Pop-Location
 
     Write-Host "--- Destroying GCP HA VPN Gateway ---" -ForegroundColor Yellow
-    Push-Location "$ROOT\environments\03-network-hub"
+    Push-Location "$ROOT\foundation\03-network-hub"
     try {
         terraform destroy "-target=module.vpn" -auto-approve -no-color
         Write-Host "    [OK] GCP HA VPN Gateway destroyed" -ForegroundColor Green

@@ -15,13 +15,13 @@ $ErrorActionPreference = "Stop"
 $ROOT = Split-Path -Parent $PSScriptRoot
 
 $layers = @(
-    @{ Path = "$ROOT\environments\00-bootstrap";      Name = "00-bootstrap";      NeedsBackend = $false },
-    @{ Path = "$ROOT\environments\01-org";             Name = "01-org";             NeedsBackend = $true },
-    @{ Path = "$ROOT\environments\02-security";        Name = "02-security";        NeedsBackend = $true },
-    @{ Path = "$ROOT\environments\03-network-hub";     Name = "03-network-hub";     NeedsBackend = $true },
-    @{ Path = "$ROOT\environments\04-observability";   Name = "04-observability";   NeedsBackend = $true },
-    @{ Path = "$ROOT\environments\05-env-dev";         Name = "05-env-dev";         NeedsBackend = $true },
-    @{ Path = "$ROOT\environments\06-env-prod";        Name = "06-env-prod";        NeedsBackend = $true }
+    @{ Path = "$ROOT\foundation\00-bootstrap";      Name = "00-bootstrap";      NeedsBackend = $false },
+    @{ Path = "$ROOT\foundation\01-org";             Name = "01-org";             NeedsBackend = $true },
+    @{ Path = "$ROOT\foundation\02-security";        Name = "02-security";        NeedsBackend = $true },
+    @{ Path = "$ROOT\foundation\03-network-hub";     Name = "03-network-hub";     NeedsBackend = $true },
+    @{ Path = "$ROOT\foundation\04-observability";   Name = "04-observability";   NeedsBackend = $true },
+    @{ Path = "$ROOT\environments\dev";              Name = "env-dev";            NeedsBackend = $true },
+    @{ Path = "$ROOT\environments\prod";             Name = "env-prod";           NeedsBackend = $true }
 )
 
 if ($IncludeAzure) {
